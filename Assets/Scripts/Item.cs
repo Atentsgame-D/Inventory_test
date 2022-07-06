@@ -2,22 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemType
+[CreateAssetMenu(fileName ="New Item", menuName ="New Item/item")]
+public class Item : ScriptableObject
 {
-    Equipment,
-    Consumablesm,
-    Etc
-}
-
-[System.Serializable]
-public class Item
-{
-    public ItemType itemType;
     public string itemName;
+    public ItemType itemType;
     public Sprite itemImage;
+    public GameObject itemPrefab;
 
-    public bool use()
+    public string weaponType;
+
+    public enum ItemType
     {
-        return false;
+        Equipment,
+        Used,
+        Ingredient,
+        Etc
     }
+
+
 }

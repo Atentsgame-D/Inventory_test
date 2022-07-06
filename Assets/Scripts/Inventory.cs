@@ -6,7 +6,7 @@ public class Inventory : MonoBehaviour
 {
     public static bool inventoryActivated = false;
 
-    // ÇÊ¿äÇÑ ÄÄÆ÷³ÍÆ®
+    // í•„ìš”í•œ ì»´í¬ë„ŒíŠ¸
     [SerializeField]
     private GameObject go_InventoryBase = null;
     [SerializeField]
@@ -21,25 +21,30 @@ public class Inventory : MonoBehaviour
 
     public void AcquireItem(Item _item, int _count)
     {
-        if (ItemType.Equipment != _item.itemType)
+        if (Item.ItemType.Equipment != _item.itemType)
         {
-
             for (int i = 0; i < slots.Length; i++)
             {
-                if (slots[i].item.itemName == _item.itemName)
+                if(slots[i].item != null)
                 {
-                    slots[i].SetSlotCount(_count);
-                    return;
-                }
+                    if (slots[i].item.itemName == _item.itemName)
+                    {
+                        slots[i].SetSlotCount(_count);
+                        return;
+                    }
+                }                
             }
         }
 
-        for(int i=0; i<slots.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
-            if(slots[i].item.itemName=="")
+            if (slots[i].item != null)
             {
-                slots[i].AddItem(_item, _count);
-                return;
+                if (slots[i].item.itemName == "")
+                {
+                    slots[i].AddItem(_item, _count);
+                    return;
+                }
             }
         }
     }
