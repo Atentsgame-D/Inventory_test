@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         //useText = GameObject.Find("UseText").GetComponent<TextMeshProUGUI>();
-        invenUI = GameObject.Find("Canvas").GetComponent<InventoryUI>();
+        invenUI = GameObject.Find("Canvas").GetComponentInChildren<InventoryUI>();
     }
 
     private void Start()

@@ -7,9 +7,17 @@ using UnityEngine.EventSystems;
 
 public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
+    public enum SlotType
+    {
+        Inventory = 0,
+        Equipment,
+        Store
+    }
+
     public Item item = null;       // 획든한 아이템
     public int itemCount;   // 획득한 아이템의 개수
     public Image itemImage; // 아이템의 이미지
+    public SlotType slotType = SlotType.Inventory; 
 
     // 필요한 컴포넌트
     [SerializeField]
@@ -20,6 +28,11 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     private Vector3 originPos = Vector3.zero;
 
     //private WeaponManager weaponManager;      // 이게 필요한데 아직 안만들었고
+
+    public Slot()
+    {
+
+    }
 
     private void Start()
     {
@@ -42,7 +55,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         itemCount = _count;
         itemImage.sprite = item.itemImage;
 
-        if(item.itemType != Item.ItemType.Equipment)
+        if(item.itemType != ItemType.Equipment)
         {
             go_CountImage.SetActive(true);
             text_Count.text = itemCount.ToString();
@@ -67,7 +80,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     }
 
     // 슬롯 초기화
-    private void ClearSlot()
+    public void ClearSlot()
     {
         item = null;
         itemCount = 0;
@@ -85,7 +98,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         {
             if(item != null)
             {
-                if(item.itemType == Item.ItemType.Equipment)
+                if(item.itemType == ItemType.Equipment)
                 {
                     // 장착
                     // 만들지 안만들지는 모르겠지만 일단 넣어놓자
@@ -93,14 +106,21 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
                 }
                 else
                 {
-                    Debug.Log(item.itemName + " 을 사용했습니다");
-                    SetSlotCount(-1);
+                    if (slotType == SlotType.Inventory)
+                    {
+                        Debug.Log(item.itemName + " 을 사용했습니다");
+                        SetSlotCount(-1);
+                    }
+                    else
+                    {
+                        // 상점일때 구입창이 뜨도록 하자.
+                    }
                 }
             }
         }
     }
 
-    // 드래그를 시작할때
+    //드래그를 시작할때
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (item != null)
@@ -135,7 +155,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
             ChangeSlot();
     }
 
-    private void ChangeSlot()
+    public virtual void ChangeSlot()
     {
         Item _tempItem = item;
         int _tempItemCount = itemCount;
